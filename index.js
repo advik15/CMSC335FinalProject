@@ -14,8 +14,11 @@ const httpSuccessStatus = 200;
 const express = require("express");
 const app = express();
 
+
 app.set("views",path.resolve(__dirname,"templates"));
 app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get("/", (req, res) => {
     res.render("homepage");
 });
@@ -23,7 +26,9 @@ app.get("/", (req, res) => {
 app.use(bodyParser.urlencoded({extended:true}));
 
 
-app.get("/bookrequest", async (req, res) =>{
+app.get("/bookreq", async (req, res) =>{
+
+  const title = req.query.title
     const fetch = require('node-fetch');
 
     const url = `https://hapi-books.p.rapidapi.com/search/{req.body.searchtext}`;

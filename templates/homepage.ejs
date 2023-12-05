@@ -3,11 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reading List</title>
+    <link rel="stylesheet" type="text/css" href="/css/homepage.css">
 </head>
 <body>
-    <form action = "/bookreq" method = "get">
-        Enter <input type = "text" name = "searchtext">
-    </form>
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">MyReads</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/mybooks">My Books</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <h1>Find Your Book</h1>
+            <form action="/bookreq" method="get">
+                <label for="searchtext">Book Title:</label>
+                <input type="text" name="searchtext" id="searchtext">
+                <input type="submit" value="Find My Books" class="submit-button">
+            </form>
+        </div>
+    </main>
 </body>
 </html>
