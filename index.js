@@ -120,6 +120,20 @@ async function main() {
     
   });
 
+  app.post("/deletebooks", async (req, res) => {
+
+    let count = await  client.db(databaseAndCollection.db)
+    .collection(databaseAndCollection.collection)
+    .countDocuments({});
+      await client
+      .db(databaseAndCollection.db)
+      .collection(databaseAndCollection.collection)
+      .deleteMany({})
+    
+
+  res.redirect("/mybooks")
+  })
+
   app.listen(portNumber);
   console.log(`Web server is running at http://localhost:${portNumber}`);
   console.log("Type stop to shutdown the server: ");

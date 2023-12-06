@@ -1,18 +1,39 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Books</title>
-</head>
-<body>
-    <h1>Book List</h1>
-    <% books.forEach(book => { %>
-        <div class="book">
-            <h2><%= book.title %></h2>
-            <p>Author: <%= book.author %></p>
-            <% if (book.cover) { %>
-                <img src="<%= book.cover %>" alt="Cover of <%= book.title %>">
-            <% } %>
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="/css/mybooks.css">
+
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="nav-brand">MyReads</div>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/mybooks">My Books</a>
         </div>
-    <% }); %>
-</body>
+      </nav>
+    </header>
+    <main>
+      <h1>Book List</h1>
+      <% books.forEach(book=> { %>
+      <div class="book">
+        <h2><%= book.title %></h2>
+        <p>Author: <%= book.author %></p>
+        <% if (book.cover) { %>
+        <img src="<%= book.cover %>" alt="Cover of <%= book.title %>" />
+        <% } %>
+      </div>
+      <% }); %>
+
+      <form action="/deletebooks" method="post">
+        <input type="submit" class="submit-button" value="Delete My Reading List">
+      </form>
+    </main>
+  </body>
 </html>
