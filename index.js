@@ -14,7 +14,15 @@ const httpSuccessStatus = 200;
 const express = require("express");
 const app = express();
 
-
+const {MongoClient, ServerApiVersion} = require("mongodb");
+const user = process.env.MONGO_DB_USERNAME;
+const pass = process.env.MONGO_DB_PASSWORD;
+console.log(pass);
+const database = {
+    db:process.env.MONGO_DB_NAME,
+    collect:process.env.MONGO_COLLECTION,
+};
+console.log(database);
 app.set("views",path.resolve(__dirname,"templates"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, 'public')));
@@ -48,14 +56,14 @@ app.get("/bookreq", async (req, res) =>{
         let output = "<form action='/add-to-library' method='post'>";
         
         result.forEach((prop, index) => {
-            const bookIdentifier = encodeURIComponent(`${prop.name}-${prop.authors[0]}-${prop.cover}`);
+            const bookIdentifier = encodeURIComponent(`${prop.name}|||${prop.authors[0]}|||${prop.cover}`);
 
             output += `
                 <div>
                     <h2>${prop.name}</h2><br>
                     <p>${prop.authors[0]}</p><br>
                     <img src='${prop.cover}'><br>
-                    Add to Library <input type='checkbox' name='selectedBook' value='${bodyIdentifier}'>
+                    Add to Library <input type='checkbox' name='selectedBook' value='${bookIdentifier}'>
                 </div>
             `;
         });
@@ -64,7 +72,18 @@ app.get("/bookreq", async (req, res) =>{
     } catch (error) {
         console.error(error);
     }
+});
 
+app.post('/add-to-library', (req, res) =>{
+    let data = req.body.selectedBook;
+
+    if(data){
+        const books = Array.isArray(data) ? data : [data];
+        books.forEach(bookIdentifier => {
+            const [name, author, cover] = decodeURIComponent(bookIdentifier).split('|||');
+            console.log(`Book name: ${name}, Author: ${author}, Cover: ${cover}`);
+    });
+}
 });
 app.listen(portNumber); 
 console.log(`Web server is running at http://localhost:${portNumber}`);
