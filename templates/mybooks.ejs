@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books</title>
+</head>
+<body>
+    <h1>Book List</h1>
+    <% books.forEach(book => { %>
+        <div class="book">
+            <h2><%= book.title %></h2>
+            <p>Author: <%= book.author %></p>
+            <% if (book.cover) { %>
+                <img src="<%= book.cover %>" alt="Cover of <%= book.title %>">
+            <% } %>
+        </div>
+    <% }); %>
+</body>
+</html>
