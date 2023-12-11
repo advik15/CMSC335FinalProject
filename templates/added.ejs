@@ -22,11 +22,20 @@
 
     
 
-        <h1>Your Query Results</h1>
-        <%-output%>
+        <h1>Library Status</h1>
 
-        
+        <hr>
+        <h2>
+          <%-output%>
+        </h2>
 
+        <% if (dupes.length > 0) { %>
+            <ul>
+                <% dupes.forEach(function(title) { %>
+                    <li><%- title %></li>
+                <% }); %>
+            </ul>
+        <% } %>
         
 
 

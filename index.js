@@ -75,7 +75,7 @@ async function main() {
       });
       output +=
         "<button type='submit' class='submit-button'>Add Selected To Library</button></form>";
-      res.render("searchoutput", { output: output });
+      res.render("searchoutput", { output: output});
     } catch (error) {
       console.error(error);
     }
@@ -83,9 +83,35 @@ async function main() {
 
   app.post("/add-to-library", async (req, res) => {
     let data = req.body.selectedBook;
-
+    let duplicateFound = false;
+    let dupes = []
     if (data) {
       const books = Array.isArray(data) ? data : [data];
+
+      //check for duplicates 
+      for (const bookIdentifier of books) {
+        const [name] = decodeURIComponent(bookIdentifier).split("|||");
+        try {
+          const existingBook = await client
+            .db(databaseAndCollection.db)
+            .collection(databaseAndCollection.collection)
+            .findOne({ title: name });
+  
+          if (existingBook) {
+            console.log(`Duplicate book found: ${name}`);
+            duplicateFound = true;
+            dupes.push(name);
+            
+            //break;
+          }
+        } catch (e) {
+          console.error(e);
+          client.close();
+        }
+      }
+
+
+      if (!duplicateFound) {
       for (const bookIdentifier of books) {
         const [name, author, cover] =
           decodeURIComponent(bookIdentifier).split("|||");
@@ -105,7 +131,15 @@ async function main() {
             client.close();
           }
         }
+      }
+
+      if (duplicateFound) {
+        res.render("added", {output: "Duplicates Found: ", dupes: dupes})
+      } else {
+        res.render("added", {output: "Succesfully Added Books", dupes: []})
+      }
     }
+
   });
 
   app.get("/mybooks", async (req, res) =>{
